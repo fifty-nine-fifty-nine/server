@@ -10,8 +10,14 @@
 ### **2. 보조 브랜치**
 
 * **feature branches** : 새로운 기능 개발을 위한 브랜치입니다. 개발이 완료되면 develop 브랜치에 병합(merge)됩니다.
+  * 규칙: `feature/[기능명]-[작업 내용 또는 이슈 번호]`
+  * 예: `feature/login-email-validation`
 * **release branches** : 배포를 위해 마지막 테스트와 버그 수정을 진행하는 브랜치입니다. 완료되면 master와 develop 브랜치에 병합됩니다.
+  * 규칙: `release/[버전 번호]`
+  * 예: `release/1.2.0`
 * **hotfix branches** : 운영 환경에서 발생한 긴급한 버그를 수정하기 위한 브랜치입니다. 수정 후 master와 develop 브랜치에 병합됩니다.
+  * 규칙: `hotfix/[버그명]-[이슈 번호 또는 날짜]`
+  * 예: `hotfix/login-bug-#123`
 
 ## **Git Commit 규칙**
 
