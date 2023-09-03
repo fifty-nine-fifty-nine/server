@@ -8,6 +8,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -34,15 +35,20 @@ public class GptClient {
 
     public GptResult getGptResponse(String body) {
         RestTemplate restTemplate = new RestTemplate();
+        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
 
         HttpHeaders headers = buildHeaders();
         Map<String, Object> requestBody = buildBody(body);
 
         HttpEntity<Map<String, Object>> req = new HttpEntity<>(requestBody, headers);
 
-        ResponseEntity<Map> response = restTemplate.exchange(apiEndpoint, HttpMethod.POST, req, Map.class);
-
-        return generateResult(response.getBody());
+        try{
+            ResponseEntity<Map> response = restTemplate.exchange(apiEndpoint, HttpMethod.POST, req, Map.class);
+            return generateResult(response.getBody());
+        }catch (Exception ex){
+            logger.error(ex.getMessage());
+            throw ex;
+        }
     }
 
     private HttpHeaders buildHeaders(){
