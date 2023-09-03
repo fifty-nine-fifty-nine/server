@@ -21,22 +21,6 @@ public class GptResult {
         this.adjective = adjective;
     }
 
-    public String getBreed() {
-        return breed;
-    }
-
-    public void setBreed(String breed) {
-        this.breed = breed;
-    }
-
-    public String getAdjective() {
-        return adjective;
-    }
-
-    public void setAdjective(String adjective) {
-        this.adjective = adjective;
-    }
-
     @Override
     public String toString() {
         return "GptResult{" +
