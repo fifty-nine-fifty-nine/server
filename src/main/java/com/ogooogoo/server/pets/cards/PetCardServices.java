@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class PetCardServices {
     private final DallEClient dallEClient;
     private final GptClient gptClient;
-    
+
     public CreatePetCardResDto generate(CreatePetCardReqDto req) {
         GptResult gptResult = gptClient.getGptResponse(req.getDescription());
         DallEResponse dallEResponse = dallEClient.generateImage(gptResult);
