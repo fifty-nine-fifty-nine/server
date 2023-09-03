@@ -1,6 +1,9 @@
 package com.ogooogoo.server.clients.dall_e;
 
+import com.ogooogoo.server.clients.gpt.GptClient;
 import com.ogooogoo.server.clients.gpt.GptResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -17,6 +20,7 @@ public class DallEClient {
     private final String apiEndpoint;
     private final String authToken;
     private final String prompt;
+    private static final Logger logger = LoggerFactory.getLogger(GptClient.class);
 
     public DallEClient(
             @Value("${dall-e.api.endpoint}") String apiEndpoint,
@@ -38,9 +42,13 @@ public class DallEClient {
 
         HttpEntity<Map<String, Object>> entity = new HttpEntity<>(requestBody, headers);
 
-
-        ResponseEntity<DallEResponse> response = restTemplate.exchange(apiEndpoint, HttpMethod.POST, entity, DallEResponse.class);
-        return response.getBody();
+        try{
+            ResponseEntity<DallEResponse> response = restTemplate.exchange(apiEndpoint, HttpMethod.POST, entity, DallEResponse.class);
+            return response.getBody();
+        }catch (Exception ex){
+            logger.error(ex.getMessage());
+            throw ex;
+        }
     }
 
     private HttpHeaders buildHeaders(){
