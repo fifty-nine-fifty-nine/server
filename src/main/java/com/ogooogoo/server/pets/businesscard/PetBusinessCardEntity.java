@@ -104,4 +104,24 @@ public class PetBusinessCardEntity {
         this.petHate = petBusinessCardRequestDto.getPetHate();
     }
 
+    public void update(PetBusinessCardRequestDto petBusinessCardRequestDto, Long userId) {
+        this.userId = userId;
+        this.type = petBusinessCardRequestDto.getType();
+        this.petName = petBusinessCardRequestDto.getPetName();
+        this.gender = petBusinessCardRequestDto.getGender();
+        this.petProfileImgPath = petBusinessCardRequestDto.getPetProfileImgPath();
+        this.birthYear = petBusinessCardRequestDto.getBirthYear();
+        this.birthMonth = petBusinessCardRequestDto.getBirthMonth();
+        this.birthDay = petBusinessCardRequestDto.getBirthDay();
+        this.species = petBusinessCardRequestDto.getSpecies();
+        this.neutralization = petBusinessCardRequestDto.isNeutralization();
+        this.allergy = petBusinessCardRequestDto.isNeutralization();
+        this.mainAllergy = petBusinessCardRequestDto.getMainAllergy();
+        this.subAllergy = petBusinessCardRequestDto.getSubAllergy();
+        this.etcAllergy = petBusinessCardRequestDto.getEtcAllergy();
+        this.personalityToPerson = petBusinessCardRequestDto.getPersonalityToPerson();
+        this.personalityAmongAnimals = petBusinessCardRequestDto.getPersonalityAmongAnimals();
+        this.petLike = petBusinessCardRequestDto.getPetLike();
+        this.petHate = petBusinessCardRequestDto.getPetHate();
+    }
 }

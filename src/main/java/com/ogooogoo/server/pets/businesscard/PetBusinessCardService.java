@@ -19,7 +19,7 @@ public class PetBusinessCardService {
 
     public ResponseEntity<?> createPetBusinessCard(PetBusinessCardRequestDto petBusinessCardRequestDto, KakaoTokenInfo info) {
 
-        // Access Token 을 사용해 kakaoId 추출
+        // Access Token 을 사용해 kakaoId 가져오기
         Long userId = info.getId();
 
         // 카드 개수 확인 > 2개 초과할 경우 Exception 발생
@@ -41,6 +41,21 @@ public class PetBusinessCardService {
         petBusinessCardRepository.save(petBusinessCard);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    public ResponseEntity<?> updatePetBusinessCard(PetBusinessCardRequestDto petBusinessCardRequestDto, KakaoTokenInfo info) {
+
+        Long userId = info.getId();
+
+        List<PetBusinessCardEntity> petBusinessCards = petBusinessCardRepository.findAllByUserId(userId);
+        for (PetBusinessCardEntity petBusinessCard : petBusinessCards) {
+            if (petBusinessCard.getPetName() == petBusinessCardRequestDto.getPetName()) {
+                petBusinessCard.update(petBusinessCardRequestDto, userId);
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
 
     private boolean hasDuplicates(PetBusinessCardRequestDto petBusinessCardRequestDto) {
         List<List<?>> lists = Arrays.asList(
@@ -69,5 +84,4 @@ public class PetBusinessCardService {
         }
         return false;
     }
-
 }

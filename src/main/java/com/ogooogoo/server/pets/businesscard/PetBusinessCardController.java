@@ -20,4 +20,10 @@ public class PetBusinessCardController {
         return petBusinessCardService.createPetBusinessCard(petBusinessCardRequestDto, info);
     }
 
+    @PutMapping("/businesscards")
+    public ResponseEntity<?> updatePetBusinessCard(@Validated @RequestBody PetBusinessCardRequestDto petBusinessCardRequestDto,
+                                                   @AuthenticationPrincipal KakaoTokenInfo info) {
+        return petBusinessCardService.updatePetBusinessCard(petBusinessCardRequestDto, info);
+    }
+
 }
