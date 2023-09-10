@@ -17,9 +17,12 @@ public class PetBusinessCardEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long petBusinessCardId;
 
+    @Column
+    private Long userId;
+
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private Classfication classfication;
+    private Type type;
 
     @Column(nullable = false)
     private String petName;
@@ -80,8 +83,9 @@ public class PetBusinessCardEntity {
     private List<String> petHate;
 
     @Builder
-    public PetBusinessCardEntity(PetBusinessCardRequestDto petBusinessCardRequestDto) {
-        this.classfication = petBusinessCardRequestDto.getClassfication();
+    public PetBusinessCardEntity(PetBusinessCardRequestDto petBusinessCardRequestDto, Long usedId) {
+        this.userId = usedId;
+        this.type = petBusinessCardRequestDto.getType();
         this.petName = petBusinessCardRequestDto.getPetName();
         this.gender = petBusinessCardRequestDto.getGender();
         this.petProfileImgPath = petBusinessCardRequestDto.getPetProfileImgPath();
