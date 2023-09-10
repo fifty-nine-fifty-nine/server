@@ -104,8 +104,7 @@ public class PetBusinessCardEntity {
         this.petHate = petBusinessCardRequestDto.getPetHate();
     }
 
-    public void update(PetBusinessCardRequestDto petBusinessCardRequestDto, Long userId) {
-        this.userId = userId;
+    public void update(PetBusinessCardRequestDto petBusinessCardRequestDto) {
         this.type = petBusinessCardRequestDto.getType();
         this.petName = petBusinessCardRequestDto.getPetName();
         this.gender = petBusinessCardRequestDto.getGender();

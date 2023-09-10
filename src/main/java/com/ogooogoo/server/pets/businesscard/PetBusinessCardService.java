@@ -6,10 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -25,7 +22,7 @@ public class PetBusinessCardService {
         // 카드 개수 확인 > 2개 초과할 경우 Exception 발생
         List<PetBusinessCardEntity> petBusinessCards = petBusinessCardRepository.findAllByUserId(userId);
         if (petBusinessCards.size() > 2) {
-            throw new IllegalStateException("펫명함은 2개까지 만들 수 있어요! 더 많이 만들 수 있도록 노력할게요 :)");
+            throw new IllegalStateException("펫명함은 최대 2개까지 생성할 수 있습니다");
         }
 
         // 알레르기 없음 체크했는데, 세부 항목이 넘어올 경우 > 알레르기 세부 항목 null 값으로 변경
@@ -33,7 +30,7 @@ public class PetBusinessCardService {
 
         // 배열로 들어오는 값(5개 항목) 중복 항목 있는지 체크
         if (hasDuplicates(petBusinessCardRequestDto)) {
-            throw new IllegalArgumentException("선택 항목(알레르기 세부 항목, 반려동물 성격, 반려동물 취향) 중 중복된 값이 있어요");
+            throw new IllegalArgumentException("선택 항목(알레르기 세부 항목, 반려동물 성격, 반려동물 취향) 중 중복된 값이 있습니다");
         }
 
         // 펫명함 생성
@@ -42,20 +39,30 @@ public class PetBusinessCardService {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    public ResponseEntity<?> updatePetBusinessCard(PetBusinessCardRequestDto petBusinessCardRequestDto, KakaoTokenInfo info) {
+    public ResponseEntity<?> updatePetBusinessCard(Long petBusinessCardId, PetBusinessCardRequestDto petBusinessCardRequestDto, KakaoTokenInfo info) {
 
-        Long userId = info.getId();
+        PetBusinessCardEntity petBusinessCard = petBusinessCardRepository.findById(petBusinessCardId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 명함입니다"));
 
-        List<PetBusinessCardEntity> petBusinessCards = petBusinessCardRepository.findAllByUserId(userId);
-        for (PetBusinessCardEntity petBusinessCard : petBusinessCards) {
-            if (petBusinessCard.getPetName() == petBusinessCardRequestDto.getPetName()) {
-                petBusinessCard.update(petBusinessCardRequestDto, userId);
-            }
+        if (petBusinessCard.getUserId().equals(info.getId())) {
+            petBusinessCard.update(petBusinessCardRequestDto);
+        } else {
+            throw new IllegalArgumentException("잘못된 접근입니다");
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    public ResponseEntity<?> deletePetBusinessCard(Long petBusinessCardId, KakaoTokenInfo info) {
+        PetBusinessCardEntity petBusinessCard = petBusinessCardRepository.findById(petBusinessCardId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 명함입니다"));
 
+        if (petBusinessCard.getUserId().equals(info.getId())) {
+            petBusinessCardRepository.deleteById(petBusinessCardId);
+        } else {
+            throw new IllegalArgumentException("잘못된 접근입니다");
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
     private boolean hasDuplicates(PetBusinessCardRequestDto petBusinessCardRequestDto) {
         List<List<?>> lists = Arrays.asList(
