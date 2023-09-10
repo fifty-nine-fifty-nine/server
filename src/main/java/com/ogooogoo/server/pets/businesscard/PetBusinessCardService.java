@@ -20,7 +20,7 @@ public class PetBusinessCardService {
         Long userId = info.getId();
 
         // 카드 개수 확인 > 2개 초과할 경우 Exception 발생
-        List<PetBusinessCardEntity> petBusinessCards = petBusinessCardRepository.findAllByUserId(userId);
+        List<PetBusinessCardResponseDto> petBusinessCards = petBusinessCardRepository.findAllByUserId(userId);
         if (petBusinessCards.size() > 2) {
             throw new IllegalStateException("펫명함은 최대 2개까지 생성할 수 있습니다");
         }
@@ -62,6 +62,15 @@ public class PetBusinessCardService {
             throw new IllegalArgumentException("잘못된 접근입니다");
         }
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> getMyBusinessCards(KakaoTokenInfo info) {
+        List<PetBusinessCardResponseDto> businessCards = petBusinessCardRepository.findAllByUserId(info.getId());
+        if(businessCards != null) {
+            return new ResponseEntity<>(businessCards, HttpStatus.OK);
+        } else {
+            throw new IllegalStateException("명함을 불러올 수 없습니다");
+        }
     }
 
     private boolean hasDuplicates(PetBusinessCardRequestDto petBusinessCardRequestDto) {

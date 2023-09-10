@@ -9,5 +9,6 @@ import java.util.List;
 public interface PetBusinessCardRepository extends JpaRepository<PetBusinessCardEntity, Long> {
 
     PetBusinessCardEntity findByUserId(Long userId);
-    List<PetBusinessCardEntity> findAllByUserId(Long userId);
+
+    List<PetBusinessCardResponseDto> findAllByUserId(Long userId);
 }

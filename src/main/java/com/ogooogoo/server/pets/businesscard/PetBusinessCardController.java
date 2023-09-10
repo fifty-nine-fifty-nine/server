@@ -33,4 +33,9 @@ public class PetBusinessCardController {
         return petBusinessCardService.deletePetBusinessCard(petBusinessCardId, info);
     }
 
+    @GetMapping("/myBusinesscards")
+    public ResponseEntity<?> getMyBusinessCards(@AuthenticationPrincipal KakaoTokenInfo info) {
+        return petBusinessCardService.getMyBusinessCards(info);
+    }
+
 }
