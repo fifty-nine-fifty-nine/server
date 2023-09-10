@@ -12,7 +12,7 @@ import java.util.List;
 public class PetBusinessCardRequestDto {
 
     @NotBlank
-    Classfication classfication;
+    Type type;
 
     @NotBlank
     String petName;
