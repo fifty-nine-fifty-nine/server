@@ -24,13 +24,7 @@ public class PetBusinessCardRequestDto {
     String petProfileImgPath;
 
     @NotBlank
-    int birthYear;
-
-    @NotBlank
-    int birthMonth;
-
-    @NotBlank
-    int birthDay;
+    int birth;
 
     @NotBlank
     Species species;

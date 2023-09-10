@@ -20,11 +20,7 @@ public class PetBusinessCardResponseDto {
 
     String petProfileImgPath;
 
-    int birthYear;
-
-    int birthMonth;
-
-    int birthDay;
+    int birth;
 
     Species species;
 

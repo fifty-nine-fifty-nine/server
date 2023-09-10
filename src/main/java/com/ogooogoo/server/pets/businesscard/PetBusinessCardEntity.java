@@ -35,13 +35,7 @@ public class PetBusinessCardEntity {
     private String petProfileImgPath;
 
     @Column(nullable = false)
-    private int birthYear;
-
-    @Column(nullable = false)
-    private int birthMonth;
-
-    @Column(nullable = false)
-    private int birthDay;
+    private int birth;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -89,9 +83,7 @@ public class PetBusinessCardEntity {
         this.petName = petBusinessCardRequestDto.getPetName();
         this.gender = petBusinessCardRequestDto.getGender();
         this.petProfileImgPath = petBusinessCardRequestDto.getPetProfileImgPath();
-        this.birthYear = petBusinessCardRequestDto.getBirthYear();
-        this.birthMonth = petBusinessCardRequestDto.getBirthMonth();
-        this.birthDay = petBusinessCardRequestDto.getBirthDay();
+        this.birth = petBusinessCardRequestDto.getBirth();
         this.species = petBusinessCardRequestDto.getSpecies();
         this.neutralization = petBusinessCardRequestDto.isNeutralization();
         this.allergy = petBusinessCardRequestDto.isNeutralization();
@@ -109,9 +101,7 @@ public class PetBusinessCardEntity {
         this.petName = petBusinessCardRequestDto.getPetName();
         this.gender = petBusinessCardRequestDto.getGender();
         this.petProfileImgPath = petBusinessCardRequestDto.getPetProfileImgPath();
-        this.birthYear = petBusinessCardRequestDto.getBirthYear();
-        this.birthMonth = petBusinessCardRequestDto.getBirthMonth();
-        this.birthDay = petBusinessCardRequestDto.getBirthDay();
+        this.birth = petBusinessCardRequestDto.getBirth();
         this.species = petBusinessCardRequestDto.getSpecies();
         this.neutralization = petBusinessCardRequestDto.isNeutralization();
         this.allergy = petBusinessCardRequestDto.isNeutralization();
