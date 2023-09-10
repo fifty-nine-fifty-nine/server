@@ -1,6 +1,5 @@
 package com.ogooogoo.server.apis;
 
-import com.ogooogoo.server.clients.kakao.KakaoTokenInfo;
 import com.ogooogoo.server.config.security.UnauthorizedResponse;
 import com.ogooogoo.server.pets.cards.CreatePetCardReqDto;
 import com.ogooogoo.server.pets.cards.CreatePetCardResDto;
@@ -16,12 +15,12 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 @AllArgsConstructor
 @RequestMapping("/pets")
 @Tag(name = "Pets", description = "Pets 카드와 명함 관련 api 입니다.")
@@ -61,7 +60,7 @@ public class PetsController {
                     )
             ),
     })
-    public ResponseEntity<CreatePetCardResDto> create(CreatePetCardReqDto req){
+    public ResponseEntity<CreatePetCardResDto> create(@RequestBody CreatePetCardReqDto req){
         return ResponseEntity.status(HttpStatus.CREATED).body(petCardSvc.generate(req));
     }
 
