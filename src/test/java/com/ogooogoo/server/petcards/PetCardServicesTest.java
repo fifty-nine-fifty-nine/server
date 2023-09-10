@@ -7,19 +7,18 @@ import com.ogooogoo.server.clients.gpt.GptResult;
 import com.ogooogoo.server.pets.cards.CreatePetCardReqDto;
 import com.ogooogoo.server.pets.cards.CreatePetCardResDto;
 import com.ogooogoo.server.pets.cards.PetCardServices;
-import com.ogooogoo.server.pets.category.Classfication;
+import com.ogooogoo.server.pets.category.Type;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 
 class PetCardServicesTest {
 
@@ -45,7 +44,7 @@ class PetCardServicesTest {
     void 성공적으로_펫_카드를_만들_수_있다(){
         // given
         CreatePetCardReqDto dto = CreatePetCardReqDto.builder()
-                .type(Classfication.강아지)
+                .type(Type.강아지)
                 .name("몽실이")
                 .description("sns를 하며 카페에서 커피를 마시고 셀카를 찍고 있는 풍성한 사모예드")
                 .build();
@@ -60,7 +59,7 @@ class PetCardServicesTest {
         CreatePetCardResDto res = svc.generate(dto);
 
         // then
-        assertEquals(res.getType(), Classfication.강아지);
+        assertEquals(res.getType(), Type.강아지);
         assertEquals(res.getName(), "몽실이");
         assertEquals(res.getImgUrl(), "https://mock.url");
     }
@@ -69,7 +68,7 @@ class PetCardServicesTest {
     void 이미지_url을_찾을_수_없는_경우_runtime_exception을_던진다(){
         // given
         CreatePetCardReqDto dto = CreatePetCardReqDto.builder()
-                .type(Classfication.강아지)
+                .type(Type.강아지)
                 .name("몽실이")
                 .description("sns를 하며 카페에서 커피를 마시고 셀카를 찍고 있는 풍성한 사모예드")
                 .build();
