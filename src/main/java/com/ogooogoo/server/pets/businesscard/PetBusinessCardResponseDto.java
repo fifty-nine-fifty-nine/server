@@ -10,7 +10,7 @@ import java.util.List;
 @Builder
 public class PetBusinessCardResponseDto {
 
-    private Long petBusinessCardId;
+    private Long id;
 
     Type type;
 
@@ -43,7 +43,7 @@ public class PetBusinessCardResponseDto {
     List<String> petHate;
 
     public PetBusinessCardResponseDto(PetBusinessCardEntity petBusinessCard) {
-        this.petBusinessCardId = petBusinessCard.getPetBusinessCardId();
+        this.id = petBusinessCard.getId();
         this.petName = petBusinessCard.getPetName();
         this.gender = petBusinessCard.getGender();
         this.petProfileImgPath = petBusinessCard.getPetProfileImgPath();

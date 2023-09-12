@@ -21,16 +21,16 @@ public class PetBusinessCardController {
     }
 
     @PutMapping("/businesscards/{petBusinessCardId}")
-    public ResponseEntity<?> updatePetBusinessCard(@PathVariable Long petBusinessCardId,
+    public ResponseEntity<?> updatePetBusinessCard(@PathVariable Long id,
                                                    @Validated @RequestBody PetBusinessCardRequestDto petBusinessCardRequestDto,
                                                    @AuthenticationPrincipal KakaoTokenInfo info) {
-        return petBusinessCardService.updatePetBusinessCard(petBusinessCardId, petBusinessCardRequestDto, info);
+        return petBusinessCardService.updatePetBusinessCard(id, petBusinessCardRequestDto, info);
     }
 
     @DeleteMapping("/businesscards/{petBusinessCardId}")
-    public ResponseEntity<?> deleteBusinessCard(@PathVariable Long petBusinessCardId,
+    public ResponseEntity<?> deleteBusinessCard(@PathVariable Long id,
                                                 @AuthenticationPrincipal KakaoTokenInfo info) {
-        return petBusinessCardService.deletePetBusinessCard(petBusinessCardId, info);
+        return petBusinessCardService.deletePetBusinessCard(id, info);
     }
 
     @GetMapping("/mybusinesscards")

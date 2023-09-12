@@ -15,7 +15,7 @@ public class PetBusinessCardEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long petBusinessCardId;
+    private Long id;
 
     @Column
     private Long userId;

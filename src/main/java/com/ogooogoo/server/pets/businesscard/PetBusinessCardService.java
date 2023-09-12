@@ -36,9 +36,9 @@ public class PetBusinessCardService {
         return new ResponseEntity<>(petBusinessCardResponseDto, HttpStatus.OK);
     }
 
-    public ResponseEntity<?> updatePetBusinessCard(Long petBusinessCardId, PetBusinessCardRequestDto petBusinessCardRequestDto, KakaoTokenInfo info) {
+    public ResponseEntity<?> updatePetBusinessCard(Long id, PetBusinessCardRequestDto petBusinessCardRequestDto, KakaoTokenInfo info) {
 
-        PetBusinessCardEntity petBusinessCard = petBusinessCardRepository.findById(petBusinessCardId)
+        PetBusinessCardEntity petBusinessCard = petBusinessCardRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 명함입니다"));
 
         if (!petBusinessCard.getUserId().equals(info.getId())) {
@@ -50,15 +50,15 @@ public class PetBusinessCardService {
         return new ResponseEntity<>(petBusinessCardResponseDto, HttpStatus.OK);
     }
 
-    public ResponseEntity<?> deletePetBusinessCard(Long petBusinessCardId, KakaoTokenInfo info) {
-        PetBusinessCardEntity petBusinessCard = petBusinessCardRepository.findById(petBusinessCardId)
+    public ResponseEntity<?> deletePetBusinessCard(Long id, KakaoTokenInfo info) {
+        PetBusinessCardEntity petBusinessCard = petBusinessCardRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 명함입니다"));
 
         if (!petBusinessCard.getUserId().equals(info.getId())) {
             throw new IllegalArgumentException("잘못된 접근입니다");
         }
 
-        petBusinessCardRepository.deleteById(petBusinessCardId);
+        petBusinessCardRepository.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
