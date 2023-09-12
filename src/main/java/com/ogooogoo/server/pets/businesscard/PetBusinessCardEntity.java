@@ -77,8 +77,8 @@ public class PetBusinessCardEntity {
     private List<String> petHate;
 
     @Builder
-    public PetBusinessCardEntity(PetBusinessCardRequestDto petBusinessCardRequestDto, Long usedId) {
-        this.userId = usedId;
+    public PetBusinessCardEntity(Long userId, PetBusinessCardRequestDto petBusinessCardRequestDto) {
+        this.userId = userId;
         this.type = petBusinessCardRequestDto.getType();
         this.petName = petBusinessCardRequestDto.getPetName();
         this.gender = petBusinessCardRequestDto.getGender();
