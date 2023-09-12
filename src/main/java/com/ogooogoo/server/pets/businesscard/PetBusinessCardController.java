@@ -35,7 +35,7 @@ public class PetBusinessCardController {
 
     @GetMapping("/mybusinesscards")
     public ResponseEntity<?> getMyBusinessCards(@AuthenticationPrincipal KakaoTokenInfo info) {
-        return petBusinessCardService.getMyBusinessCards(info);
+        return petBusinessCardService.getAllMy(info);
     }
 
 }

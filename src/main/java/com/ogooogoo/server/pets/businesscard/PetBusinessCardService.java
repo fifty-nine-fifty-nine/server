@@ -62,7 +62,7 @@ public class PetBusinessCardService {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    public ResponseEntity<?> getMyBusinessCards(KakaoTokenInfo info) {
+    public ResponseEntity<?> getAllMy(KakaoTokenInfo info) {
         List<PetBusinessCardResponseDto> businessCards = petBusinessCardRepository.findAllByUserId(info.getId());
 
         if (businessCards == null) {
