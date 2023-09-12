@@ -29,9 +29,11 @@ public class PetBusinessCardService {
             throw new IllegalArgumentException("선택 항목(알레르기 세부 항목, 반려동물 성격, 반려동물 취향) 중 중복된 값이 있습니다");
         }
 
-        PetBusinessCardEntity petBusinessCard = new PetBusinessCardEntity(petBusinessCardRequestDto, userId);
+        PetBusinessCardEntity petBusinessCard = new PetBusinessCardEntity(userId, petBusinessCardRequestDto);
         petBusinessCardRepository.save(petBusinessCard);
-        return new ResponseEntity<>(HttpStatus.OK);
+        PetBusinessCardResponseDto petBusinessCardResponseDto = new PetBusinessCardResponseDto(petBusinessCard);
+
+        return new ResponseEntity<>(petBusinessCardResponseDto, HttpStatus.OK);
     }
 
     public ResponseEntity<?> updatePetBusinessCard(Long petBusinessCardId, PetBusinessCardRequestDto petBusinessCardRequestDto, KakaoTokenInfo info) {
@@ -44,7 +46,8 @@ public class PetBusinessCardService {
         }
 
         petBusinessCard.update(petBusinessCardRequestDto);
-        return new ResponseEntity<>(HttpStatus.OK);
+        PetBusinessCardResponseDto petBusinessCardResponseDto = new PetBusinessCardResponseDto(petBusinessCard);
+        return new ResponseEntity<>(petBusinessCardResponseDto, HttpStatus.OK);
     }
 
     public ResponseEntity<?> deletePetBusinessCard(Long petBusinessCardId, KakaoTokenInfo info) {
@@ -62,7 +65,7 @@ public class PetBusinessCardService {
     public ResponseEntity<?> getMyBusinessCards(KakaoTokenInfo info) {
         List<PetBusinessCardResponseDto> businessCards = petBusinessCardRepository.findAllByUserId(info.getId());
 
-        if(businessCards == null) {
+        if (businessCards == null) {
             throw new IllegalStateException("명함을 불러올 수 없습니다");
         }
 

@@ -42,4 +42,21 @@ public class PetBusinessCardResponseDto {
 
     List<String> petHate;
 
+    public PetBusinessCardResponseDto(PetBusinessCardEntity petBusinessCard) {
+        this.petBusinessCardId = petBusinessCard.getPetBusinessCardId();
+        this.petName = petBusinessCard.getPetName();
+        this.gender = petBusinessCard.getGender();
+        this.petProfileImgPath = petBusinessCard.getPetProfileImgPath();
+        this.birth = petBusinessCard.getBirth();
+        this.species = petBusinessCard.getSpecies();
+        this.neutralization = petBusinessCard.isNeutralization();
+        this.allergy = petBusinessCard.isAllergy();
+        this.mainAllergy = petBusinessCard.getMainAllergy();
+        this.subAllergy = petBusinessCard.getSubAllergy();
+        this.etcAllergy = petBusinessCard.getEtcAllergy();
+        this.personalityToPerson = petBusinessCard.getPersonalityToPerson();
+        this.personalityAmongAnimals = petBusinessCard.getPersonalityAmongAnimals();
+        this.petLike = petBusinessCard.getPetLike();
+        this.petHate = petBusinessCard.getPetHate();
+    }
 }
