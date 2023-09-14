@@ -14,11 +14,11 @@ public class PetBusinessCardService {
 
     private final PetBusinessCardRepository petBusinessCardRepository;
 
-    public ResponseEntity<?> createPetBusinessCard(PetBusinessCardRequestDto petBusinessCardRequestDto, KakaoTokenInfo info) {
+    public ResponseEntity<PetBusinessCardResponseDto> createPetBusinessCard(PetBusinessCardRequestDto petBusinessCardRequestDto, KakaoTokenInfo info) {
 
         Long userId = info.getId();
 
-        List<PetBusinessCardResponseDto> petBusinessCards = petBusinessCardRepository.findAllByUserId(userId);
+        List<PetBusinessCardEntity> petBusinessCards = petBusinessCardRepository.findAllByUserId(userId);
         if (petBusinessCards.size() > 2) {
             throw new IllegalStateException("펫명함은 최대 2개까지 생성할 수 있습니다");
         }
@@ -31,12 +31,12 @@ public class PetBusinessCardService {
 
         PetBusinessCardEntity petBusinessCard = new PetBusinessCardEntity(userId, petBusinessCardRequestDto);
         petBusinessCardRepository.save(petBusinessCard);
-        PetBusinessCardResponseDto petBusinessCardResponseDto = new PetBusinessCardResponseDto(petBusinessCard);
+        PetBusinessCardResponseDto responseDto = new PetBusinessCardResponseDto(petBusinessCard);
 
-        return new ResponseEntity<>(petBusinessCardResponseDto, HttpStatus.OK);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
-    public ResponseEntity<?> updatePetBusinessCard(Long id, PetBusinessCardRequestDto petBusinessCardRequestDto, KakaoTokenInfo info) {
+    public ResponseEntity<PetBusinessCardResponseDto> updatePetBusinessCard(Long id, PetBusinessCardRequestDto petBusinessCardRequestDto, KakaoTokenInfo info) {
 
         PetBusinessCardEntity petBusinessCard = petBusinessCardRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 명함입니다"));
@@ -62,8 +62,8 @@ public class PetBusinessCardService {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    public ResponseEntity<?> getAllMy(KakaoTokenInfo info) {
-        List<PetBusinessCardResponseDto> businessCards = petBusinessCardRepository.findAllByUserId(info.getId());
+    public ResponseEntity<List<PetBusinessCardEntity>> getAllMy(KakaoTokenInfo info) {
+        List<PetBusinessCardEntity> businessCards = petBusinessCardRepository.findAllByUserId(info.getId());
 
 
         if (businessCards == null) {
@@ -71,11 +71,11 @@ public class PetBusinessCardService {
         }
 
         if (businessCards.size() == 2) {
-            PetBusinessCardResponseDto card1 = businessCards.get(0);
-            PetBusinessCardResponseDto card2 = businessCards.get(1);
+            PetBusinessCardEntity card1 = businessCards.get(0);
+            PetBusinessCardEntity card2 = businessCards.get(1);
 
             if (card1.getBirth() > card2.getBirth()) {
-                PetBusinessCardResponseDto temp = card1;
+                PetBusinessCardEntity temp = card1;
                 card1 = card2;
                 card2 = temp;
             }
