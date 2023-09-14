@@ -76,6 +76,12 @@ public class PetBusinessCardEntity {
     @ElementCollection
     private List<String> petHate;
 
+    @Column
+    @ElementCollection
+    private List<String> businesscardImgPath;
+
+
+
     @Builder
     public PetBusinessCardEntity(Long userId, PetBusinessCardRequestDto petBusinessCardRequestDto) {
         this.userId = userId;
@@ -94,6 +100,7 @@ public class PetBusinessCardEntity {
         this.personalityAmongAnimals = petBusinessCardRequestDto.getPersonalityAmongAnimals();
         this.petLike = petBusinessCardRequestDto.getPetLike();
         this.petHate = petBusinessCardRequestDto.getPetHate();
+        this.businesscardImgPath = petBusinessCardRequestDto.getBusinesscardImgPath();
     }
 
     public void update(PetBusinessCardRequestDto petBusinessCardRequestDto) {
@@ -112,5 +119,6 @@ public class PetBusinessCardEntity {
         this.personalityAmongAnimals = petBusinessCardRequestDto.getPersonalityAmongAnimals();
         this.petLike = petBusinessCardRequestDto.getPetLike();
         this.petHate = petBusinessCardRequestDto.getPetHate();
+        this.businesscardImgPath = petBusinessCardRequestDto.getBusinesscardImgPath();
     }
 }
