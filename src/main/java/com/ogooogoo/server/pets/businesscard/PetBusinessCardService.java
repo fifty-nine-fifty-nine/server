@@ -1,12 +1,16 @@
 package com.ogooogoo.server.pets.businesscard;
 
 import com.ogooogoo.server.clients.kakao.KakaoTokenInfo;
+import com.ogooogoo.server.pets.category.Species;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @RequiredArgsConstructor
 @Service
@@ -82,6 +86,10 @@ public class PetBusinessCardService {
         }
 
         return new ResponseEntity<>(businessCards, HttpStatus.OK);
+    }
+
+    public String getALlSpecies() throws Exception {
+        return Species.getAllSpecies();
     }
 
     private boolean hasDuplicates(PetBusinessCardRequestDto petBusinessCardRequestDto) {

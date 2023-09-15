@@ -40,4 +40,9 @@ public class PetBusinessCardController {
         return petBusinessCardService.getAllMy(info);
     }
 
+    @GetMapping("/species/all")
+    public String getAllSpecies() throws Exception {
+        return petBusinessCardService.getALlSpecies();
+    }
+
 }
