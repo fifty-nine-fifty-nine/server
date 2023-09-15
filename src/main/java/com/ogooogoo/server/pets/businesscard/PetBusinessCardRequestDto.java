@@ -28,7 +28,7 @@ public class PetBusinessCardRequestDto {
     int birth;
 
     @NotBlank
-    Species species;
+    String species;
 
     @NotBlank
     boolean neutralization;
