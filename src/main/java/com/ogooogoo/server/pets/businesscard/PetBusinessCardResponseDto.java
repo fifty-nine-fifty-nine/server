@@ -7,10 +7,9 @@ import lombok.Getter;
 import java.util.List;
 
 @Getter
-@Builder
 public class PetBusinessCardResponseDto {
 
-    private Long petBusinessCardId;
+    Long id;
 
     Type type;
 
@@ -42,4 +41,26 @@ public class PetBusinessCardResponseDto {
 
     List<String> petHate;
 
+    List<String> businesscardImgPath;
+
+
+    @Builder
+    public PetBusinessCardResponseDto(PetBusinessCardEntity petBusinessCard) {
+        this.id = petBusinessCard.getId();
+        this.petName = petBusinessCard.getPetName();
+        this.gender = petBusinessCard.getGender();
+        this.petProfileImgPath = petBusinessCard.getPetProfileImgPath();
+        this.birth = petBusinessCard.getBirth();
+        this.species = petBusinessCard.getSpecies();
+        this.neutralization = petBusinessCard.isNeutralization();
+        this.allergy = petBusinessCard.isAllergy();
+        this.mainAllergy = petBusinessCard.getMainAllergy();
+        this.subAllergy = petBusinessCard.getSubAllergy();
+        this.etcAllergy = petBusinessCard.getEtcAllergy();
+        this.personalityToPerson = petBusinessCard.getPersonalityToPerson();
+        this.personalityAmongAnimals = petBusinessCard.getPersonalityAmongAnimals();
+        this.petLike = petBusinessCard.getPetLike();
+        this.petHate = petBusinessCard.getPetHate();
+        this.businesscardImgPath = petBusinessCard.getBusinesscardImgPath();
+    }
 }
