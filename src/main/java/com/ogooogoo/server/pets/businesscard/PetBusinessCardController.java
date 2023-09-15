@@ -4,9 +4,9 @@ import com.ogooogoo.server.clients.kakao.KakaoTokenInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -17,14 +17,14 @@ public class PetBusinessCardController {
     private final PetBusinessCardService petBusinessCardService;
 
     @PostMapping("/businesscards")
-    public ResponseEntity<PetBusinessCardResponseDto> createPetBusinessCard(@Validated @RequestBody PetBusinessCardRequestDto petBusinessCardRequestDto,
+    public ResponseEntity<PetBusinessCardResponseDto> createPetBusinessCard(@Valid @RequestBody PetBusinessCardRequestDto petBusinessCardRequestDto,
                                                                             @AuthenticationPrincipal KakaoTokenInfo info) {
         return petBusinessCardService.createPetBusinessCard(petBusinessCardRequestDto, info);
     }
 
     @PutMapping("/businesscards/{id}")
     public ResponseEntity<PetBusinessCardResponseDto> updatePetBusinessCard(@PathVariable Long id,
-                                                                            @Validated @RequestBody PetBusinessCardRequestDto petBusinessCardRequestDto,
+                                                                            @Valid @RequestBody PetBusinessCardRequestDto petBusinessCardRequestDto,
                                                                             @AuthenticationPrincipal KakaoTokenInfo info) {
         return petBusinessCardService.updatePetBusinessCard(id, petBusinessCardRequestDto, info);
     }

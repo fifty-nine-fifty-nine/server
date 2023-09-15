@@ -1,5 +1,6 @@
 package com.ogooogoo.server.pets.businesscard;
 
+import com.ogooogoo.server.pets.annotation.Duplication;
 import com.ogooogoo.server.pets.category.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -35,20 +36,26 @@ public class PetBusinessCardRequestDto {
     @NotBlank
     boolean allergy;
 
+    @Duplication
     List<MainAllergy> mainAllergy;
 
+    @Duplication
     List<SubAllergy> subAllergy;
 
+    @Duplication
     List<EtcAllergy> etcAllergy;
 
     String personalityToPerson;
 
     String personalityAmongAnimals;
 
+    @Duplication
     List<String> petLike;
 
+    @Duplication
     List<String> petHate;
 
+    @NotBlank
     List<String> businesscardImgPath;
 
 
