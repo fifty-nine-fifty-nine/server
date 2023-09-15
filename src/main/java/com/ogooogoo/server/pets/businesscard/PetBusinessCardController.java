@@ -18,14 +18,14 @@ public class PetBusinessCardController {
 
     @PostMapping("/businesscards")
     public ResponseEntity<PetBusinessCardResponseDto> createPetBusinessCard(@Validated @RequestBody PetBusinessCardRequestDto petBusinessCardRequestDto,
-                                                   @AuthenticationPrincipal KakaoTokenInfo info) {
+                                                                            @AuthenticationPrincipal KakaoTokenInfo info) {
         return petBusinessCardService.createPetBusinessCard(petBusinessCardRequestDto, info);
     }
 
     @PutMapping("/businesscards/{id}")
     public ResponseEntity<PetBusinessCardResponseDto> updatePetBusinessCard(@PathVariable Long id,
-                                                   @Validated @RequestBody PetBusinessCardRequestDto petBusinessCardRequestDto,
-                                                   @AuthenticationPrincipal KakaoTokenInfo info) {
+                                                                            @Validated @RequestBody PetBusinessCardRequestDto petBusinessCardRequestDto,
+                                                                            @AuthenticationPrincipal KakaoTokenInfo info) {
         return petBusinessCardService.updatePetBusinessCard(id, petBusinessCardRequestDto, info);
     }
 
@@ -35,7 +35,7 @@ public class PetBusinessCardController {
         return petBusinessCardService.deletePetBusinessCard(id, info);
     }
 
-    @GetMapping("/mybusinesscards")
+    @GetMapping("/businesscards/me")
     public ResponseEntity<List<PetBusinessCardEntity>> getMyBusinessCards(@AuthenticationPrincipal KakaoTokenInfo info) {
         return petBusinessCardService.getAllMy(info);
     }
