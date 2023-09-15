@@ -49,6 +49,9 @@ public class PetBusinessCardRequestDto {
 
     List<String> petHate;
 
+    List<String> businesscardImgPath;
+
+
     public void validation() {
         if (!this.allergy) {
             this.mainAllergy = null;

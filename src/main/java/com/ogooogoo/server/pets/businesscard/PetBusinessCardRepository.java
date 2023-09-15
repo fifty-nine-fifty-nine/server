@@ -10,5 +10,5 @@ public interface PetBusinessCardRepository extends JpaRepository<PetBusinessCard
 
     PetBusinessCardEntity findByUserId(Long userId);
 
-    List<PetBusinessCardResponseDto> findAllByUserId(Long userId);
+    List<PetBusinessCardEntity> findAllByUserId(Long userId);
 }

@@ -11,11 +11,11 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Entity
-public class PetBusinessCardEntity {
+public class PetBusinessCardEntity implements Comparable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long petBusinessCardId;
+    private Long id;
 
     @Column
     private Long userId;
@@ -76,9 +76,14 @@ public class PetBusinessCardEntity {
     @ElementCollection
     private List<String> petHate;
 
+    @Column
+    @ElementCollection
+    private List<String> businesscardImgPath;
+
+
     @Builder
-    public PetBusinessCardEntity(PetBusinessCardRequestDto petBusinessCardRequestDto, Long usedId) {
-        this.userId = usedId;
+    public PetBusinessCardEntity(Long userId, PetBusinessCardRequestDto petBusinessCardRequestDto) {
+        this.userId = userId;
         this.type = petBusinessCardRequestDto.getType();
         this.petName = petBusinessCardRequestDto.getPetName();
         this.gender = petBusinessCardRequestDto.getGender();
@@ -94,6 +99,7 @@ public class PetBusinessCardEntity {
         this.personalityAmongAnimals = petBusinessCardRequestDto.getPersonalityAmongAnimals();
         this.petLike = petBusinessCardRequestDto.getPetLike();
         this.petHate = petBusinessCardRequestDto.getPetHate();
+        this.businesscardImgPath = petBusinessCardRequestDto.getBusinesscardImgPath();
     }
 
     public void update(PetBusinessCardRequestDto petBusinessCardRequestDto) {
@@ -112,5 +118,20 @@ public class PetBusinessCardEntity {
         this.personalityAmongAnimals = petBusinessCardRequestDto.getPersonalityAmongAnimals();
         this.petLike = petBusinessCardRequestDto.getPetLike();
         this.petHate = petBusinessCardRequestDto.getPetHate();
+        this.businesscardImgPath = petBusinessCardRequestDto.getBusinesscardImgPath();
     }
+
+    @Override
+    public int compareTo(Object o) {
+        PetBusinessCardEntity p = (PetBusinessCardEntity) o;
+
+        if (this.getBirth() < p.getBirth()) {
+            return -1;
+        } else if (this.getBirth() > p.getBirth()) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
 }
