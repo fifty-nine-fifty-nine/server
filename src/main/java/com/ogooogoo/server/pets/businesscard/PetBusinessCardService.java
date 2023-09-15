@@ -7,10 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -43,7 +40,7 @@ public class PetBusinessCardService {
     public ResponseEntity<PetBusinessCardResponseDto> updatePetBusinessCard(Long id, PetBusinessCardRequestDto petBusinessCardRequestDto, KakaoTokenInfo info) {
 
         PetBusinessCardEntity petBusinessCard = petBusinessCardRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 명함입니다"));
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 펫명함입니다"));
 
         if (!petBusinessCard.getUserId().equals(info.getId())) {
             throw new IllegalArgumentException("잘못된 접근입니다");
@@ -56,7 +53,7 @@ public class PetBusinessCardService {
 
     public ResponseEntity<?> deletePetBusinessCard(Long id, KakaoTokenInfo info) {
         PetBusinessCardEntity petBusinessCard = petBusinessCardRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 명함입니다"));
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 펫명함입니다"));
 
         if (!petBusinessCard.getUserId().equals(info.getId())) {
             throw new IllegalArgumentException("잘못된 접근입니다");
@@ -70,20 +67,11 @@ public class PetBusinessCardService {
         List<PetBusinessCardEntity> businessCards = petBusinessCardRepository.findAllByUserId(info.getId());
 
 
-        if (businessCards == null) {
+        if (businessCards == null || businessCards.size() < 1 || businessCards.size() > 2) {
             throw new IllegalStateException("명함을 불러올 수 없습니다");
         }
 
-        if (businessCards.size() == 2) {
-            PetBusinessCardEntity card1 = businessCards.get(0);
-            PetBusinessCardEntity card2 = businessCards.get(1);
-
-            if (card1.getBirth() > card2.getBirth()) {
-                PetBusinessCardEntity temp = card1;
-                card1 = card2;
-                card2 = temp;
-            }
-        }
+        Collections.sort(businessCards);
 
         return new ResponseEntity<>(businessCards, HttpStatus.OK);
     }

@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Entity
-public class PetBusinessCardEntity {
+public class PetBusinessCardEntity implements Comparable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -81,7 +81,6 @@ public class PetBusinessCardEntity {
     private List<String> businesscardImgPath;
 
 
-
     @Builder
     public PetBusinessCardEntity(Long userId, PetBusinessCardRequestDto petBusinessCardRequestDto) {
         this.userId = userId;
@@ -121,4 +120,18 @@ public class PetBusinessCardEntity {
         this.petHate = petBusinessCardRequestDto.getPetHate();
         this.businesscardImgPath = petBusinessCardRequestDto.getBusinesscardImgPath();
     }
+
+    @Override
+    public int compareTo(Object o) {
+        PetBusinessCardEntity p = (PetBusinessCardEntity) o;
+
+        if (this.getBirth() < p.getBirth()) {
+            return -1;
+        } else if (this.getBirth() > p.getBirth()) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
 }
