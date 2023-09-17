@@ -1,5 +1,6 @@
 package com.ogooogoo.server.pets;
 
+import com.ogooogoo.server.clients.kakao.KakaoTokenInfo;
 import com.ogooogoo.server.pets.businesscard.PetBusinessCardEntity;
 import com.ogooogoo.server.pets.businesscard.PetBusinessCardRepository;
 import com.ogooogoo.server.pets.businesscard.PetBusinessCardRequestDto;
@@ -25,19 +26,22 @@ class PetBusinessCardServiceTest {
     @Test
     void 펫명함_생성_성공() {
         //given
+
+        KakaoTokenInfo info = new KakaoTokenInfo();
+        Long userId = info.getId();
+
         PetBusinessCardRequestDto petBusinessCardRequestDto = PetBusinessCardRequestDto.builder()
-                .classfication(Classfication.valueOf("강아지")).petName("백구")
+                .type(Type.valueOf("강아지")).petName("백구")
                 .gender(Gender.valueOf("수컷")).petProfileImgPath("/images/whitedog")
-                .birthYear(2023).birthMonth(8).birthDay(15)
-                .species(Species.valueOf("허스키")).neutralization(false).allergy(false)
+                .birth(20230815).species("시베리안 허스키").neutralization(false).allergy(false)
                 .mainAllergy(List.of(MainAllergy.valueOf("소"), MainAllergy.valueOf("닭"), MainAllergy.valueOf("닭")))
                 .subAllergy(List.of(SubAllergy.valueOf("계란"), SubAllergy.valueOf(("멸치"))))
                 .etcAllergy(List.of(EtcAllergy.valueOf("콩"), EtcAllergy.valueOf("귀리")))
                 .personalityToPerson("사람을 좋아해요").personalityAmongAnimals("강아지 사이에서는 적응을 잘 못하고, 고양이를 좋아해요")
                 .petLike(List.of("공놀이를 좋아해요")).petHate(List.of("머리 쓰다듬기를 싫어해요"))
-                .build();
+                .businesscardImgPath(List.of("/images/petprofilefront", "/images/petprofileback")).build();
 
-        PetBusinessCardEntity petBusinessCard = new PetBusinessCardEntity(petBusinessCardRequestDto);
+        PetBusinessCardEntity petBusinessCard = new PetBusinessCardEntity(userId, petBusinessCardRequestDto);
 
         //when
         PetBusinessCardEntity saveResult = petBusinessCardRepository.save(petBusinessCard);
