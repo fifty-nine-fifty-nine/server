@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Getter
@@ -30,10 +31,10 @@ public class PetBusinessCardRequestDto {
     @NotBlank
     String species;
 
-    @NotBlank
+    @NotNull
     boolean neutralization;
 
-    @NotBlank
+    @NotNull
     boolean allergy;
 
     @Duplication
