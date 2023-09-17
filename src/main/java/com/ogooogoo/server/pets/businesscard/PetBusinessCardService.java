@@ -26,10 +26,6 @@ public class PetBusinessCardService {
 
         petBusinessCardRequestDto.validation();
 
-        if (hasDuplicates(petBusinessCardRequestDto)) {
-            throw new IllegalArgumentException("선택 항목(알레르기 세부 항목, 반려동물 성격, 반려동물 취향) 중 중복된 값이 있습니다");
-        }
-
         PetBusinessCardEntity petBusinessCard = new PetBusinessCardEntity(userId, petBusinessCardRequestDto);
         petBusinessCardRepository.save(petBusinessCard);
         PetBusinessCardResponseDto responseDto = new PetBusinessCardResponseDto(petBusinessCard);
@@ -80,31 +76,4 @@ public class PetBusinessCardService {
         return Species.getAllSpecies();
     }
 
-    private boolean hasDuplicates(PetBusinessCardRequestDto petBusinessCardRequestDto) {
-        List<List<?>> lists = Arrays.asList(
-                petBusinessCardRequestDto.getMainAllergy(),
-                petBusinessCardRequestDto.getSubAllergy(),
-                petBusinessCardRequestDto.getEtcAllergy(),
-                petBusinessCardRequestDto.getPetLike(),
-                petBusinessCardRequestDto.getPetHate()
-        );
-
-        for (List<?> list : lists) {
-            if (hasDuplicates(list)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public static boolean hasDuplicates(List<?> list) {
-        Set<Object> set = new HashSet<>();
-        for (Object item : list) {
-            if (set.contains(item)) {
-                return true;
-            }
-            set.add(item);
-        }
-        return false;
-    }
 }
