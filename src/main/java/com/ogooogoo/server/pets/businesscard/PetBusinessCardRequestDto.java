@@ -2,30 +2,31 @@ package com.ogooogoo.server.pets.businesscard;
 
 import com.ogooogoo.server.pets.annotation.Duplication;
 import com.ogooogoo.server.pets.category.*;
-import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Getter
-@Builder
+@NoArgsConstructor
 public class PetBusinessCardRequestDto {
 
-    @NotBlank
+    @NotNull
     Type type;
 
     @NotBlank
     String petName;
 
-    @NotBlank
+    @NotNull
     Gender gender;
 
     @NotBlank
     String petProfileImgPath;
 
-    @NotBlank
+    @NotNull
     int birth;
 
     @NotBlank
@@ -56,7 +57,7 @@ public class PetBusinessCardRequestDto {
     @Duplication
     List<String> petHate;
 
-    @NotBlank
+    @NotEmpty
     List<String> businesscardImgPath;
 
 

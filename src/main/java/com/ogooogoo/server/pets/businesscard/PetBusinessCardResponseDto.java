@@ -3,10 +3,12 @@ package com.ogooogoo.server.pets.businesscard;
 import com.ogooogoo.server.pets.category.*;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Getter
+@NoArgsConstructor
 public class PetBusinessCardResponseDto {
 
     Long id;
