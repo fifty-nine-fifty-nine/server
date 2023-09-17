@@ -89,7 +89,7 @@ public class PetBusinessCardEntity implements Comparable {
         this.gender = petBusinessCardRequestDto.getGender();
         this.petProfileImgPath = petBusinessCardRequestDto.getPetProfileImgPath();
         this.birth = petBusinessCardRequestDto.getBirth();
-        this.species = petBusinessCardRequestDto.getSpecies();
+        this.species = Species.getSpecies(petBusinessCardRequestDto.getSpecies());
         this.neutralization = petBusinessCardRequestDto.isNeutralization();
         this.allergy = petBusinessCardRequestDto.isNeutralization();
         this.mainAllergy = petBusinessCardRequestDto.getMainAllergy();
@@ -108,7 +108,7 @@ public class PetBusinessCardEntity implements Comparable {
         this.gender = petBusinessCardRequestDto.getGender();
         this.petProfileImgPath = petBusinessCardRequestDto.getPetProfileImgPath();
         this.birth = petBusinessCardRequestDto.getBirth();
-        this.species = petBusinessCardRequestDto.getSpecies();
+        this.species = Species.getSpecies(petBusinessCardRequestDto.getSpecies());
         this.neutralization = petBusinessCardRequestDto.isNeutralization();
         this.allergy = petBusinessCardRequestDto.isNeutralization();
         this.mainAllergy = petBusinessCardRequestDto.getMainAllergy();
