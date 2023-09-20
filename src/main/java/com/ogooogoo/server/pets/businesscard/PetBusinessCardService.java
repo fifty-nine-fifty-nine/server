@@ -62,10 +62,14 @@ public class PetBusinessCardService {
     public ResponseEntity<List<PetBusinessCardEntity>> getAllMy(KakaoTokenInfo info) {
         List<PetBusinessCardEntity> businessCards = petBusinessCardRepository.findAllByUserId(info.getId());
 
+        if (businessCards == null || businessCards.size() < 1 ) {
+            return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);
+        }
 
-        if (businessCards == null || businessCards.size() < 1 || businessCards.size() > 2) {
+        if (businessCards.size() > 2) {
             throw new IllegalStateException("명함을 불러올 수 없습니다");
         }
+
 
         Collections.sort(businessCards);
 
