@@ -16,6 +16,11 @@ public class PetBusinessCardController {
 
     private final PetBusinessCardService petBusinessCardService;
 
+    @GetMapping("/check")
+    public ResponseEntity<Integer> checkBusinessCard(@AuthenticationPrincipal KakaoTokenInfo info) {
+        return petBusinessCardService.checkBusinessCard(info);
+    }
+
     @PostMapping("/businesscards")
     public ResponseEntity<PetBusinessCardResponseDto> createPetBusinessCard(@Valid @RequestBody PetBusinessCardRequestDto petBusinessCardRequestDto,
                                                                             @AuthenticationPrincipal KakaoTokenInfo info) {

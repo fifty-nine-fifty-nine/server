@@ -15,6 +15,15 @@ public class PetBusinessCardService {
 
     private final PetBusinessCardRepository petBusinessCardRepository;
 
+    public ResponseEntity<Integer> checkBusinessCard(KakaoTokenInfo info) {
+
+        Long userId = info.getId();
+
+        List<PetBusinessCardEntity> petBusinessCards = petBusinessCardRepository.findAllByUserId(userId);
+
+        return ResponseEntity.ok().body(petBusinessCards.size());
+    }
+
     public ResponseEntity<PetBusinessCardResponseDto> createPetBusinessCard(PetBusinessCardRequestDto petBusinessCardRequestDto, KakaoTokenInfo info) {
 
         Long userId = info.getId();
@@ -30,7 +39,7 @@ public class PetBusinessCardService {
         petBusinessCardRepository.save(petBusinessCard);
         PetBusinessCardResponseDto responseDto = new PetBusinessCardResponseDto(petBusinessCard);
 
-        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+        return ResponseEntity.ok().body(responseDto);
     }
 
     public ResponseEntity<PetBusinessCardResponseDto> updatePetBusinessCard(Long id, PetBusinessCardRequestDto petBusinessCardRequestDto, KakaoTokenInfo info) {
@@ -44,10 +53,10 @@ public class PetBusinessCardService {
 
         petBusinessCard.update(petBusinessCardRequestDto);
         PetBusinessCardResponseDto petBusinessCardResponseDto = new PetBusinessCardResponseDto(petBusinessCard);
-        return new ResponseEntity<>(petBusinessCardResponseDto, HttpStatus.OK);
+        return ResponseEntity.ok().body(petBusinessCardResponseDto);
     }
 
-    public ResponseEntity<?> deletePetBusinessCard(Long id, KakaoTokenInfo info) {
+    public ResponseEntity<HttpStatus> deletePetBusinessCard(Long id, KakaoTokenInfo info) {
         PetBusinessCardEntity petBusinessCard = petBusinessCardRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 펫명함입니다"));
 
@@ -62,7 +71,7 @@ public class PetBusinessCardService {
     public ResponseEntity<List<PetBusinessCardEntity>> getAllMy(KakaoTokenInfo info) {
         List<PetBusinessCardEntity> businessCards = petBusinessCardRepository.findAllByUserId(info.getId());
 
-        if (businessCards == null || businessCards.size() < 1 ) {
+        if (businessCards == null || businessCards.size() < 1) {
             return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);
         }
 
@@ -70,10 +79,9 @@ public class PetBusinessCardService {
             throw new IllegalStateException("명함을 불러올 수 없습니다");
         }
 
-
         Collections.sort(businessCards);
 
-        return new ResponseEntity<>(businessCards, HttpStatus.OK);
+        return ResponseEntity.ok().body(businessCards);
     }
 
     public String getALlSpecies() throws Exception {
