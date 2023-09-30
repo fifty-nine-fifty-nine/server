@@ -1,16 +1,17 @@
 package com.ogooogoo.server.pets.businesscard;
 
 import com.ogooogoo.server.pets.category.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-@Getter
-@NoArgsConstructor
+@Getter @Builder
+@AllArgsConstructor
 public class PetBusinessCardRequestDto {
 
     @NotNull

@@ -33,7 +33,7 @@ public class PetBusinessCardService {
             throw new IllegalStateException("펫명함은 최대 2개까지 생성할 수 있습니다");
         }
 
-        petBusinessCardRequestDto.validation();
+//        petBusinessCardRequestDto.validation();
 
         PetBusinessCardEntity petBusinessCard = new PetBusinessCardEntity(userId, petBusinessCardRequestDto);
         petBusinessCardRepository.save(petBusinessCard);
