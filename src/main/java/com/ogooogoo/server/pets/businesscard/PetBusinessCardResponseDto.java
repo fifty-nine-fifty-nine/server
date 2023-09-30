@@ -49,11 +49,12 @@ public class PetBusinessCardResponseDto {
     @Builder
     public PetBusinessCardResponseDto(PetBusinessCardEntity petBusinessCard) {
         this.id = petBusinessCard.getId();
+        this.type = petBusinessCard.getType();
         this.petName = petBusinessCard.getPetName();
         this.gender = petBusinessCard.getGender();
         this.petProfileImgPath = petBusinessCard.getPetProfileImgPath();
         this.birth = petBusinessCard.getBirth();
-        this.species = petBusinessCard.getSpecies();
+        this.species = Species.getSpecies(String.valueOf(petBusinessCard.getSpecies()));
         this.neutralization = petBusinessCard.isNeutralization();
         this.allergy = petBusinessCard.isAllergy();
         this.mainAllergy = petBusinessCard.getMainAllergy();
