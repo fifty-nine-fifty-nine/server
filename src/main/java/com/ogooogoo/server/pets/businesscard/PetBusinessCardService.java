@@ -52,8 +52,9 @@ public class PetBusinessCardService {
         }
 
         petBusinessCard.update(petBusinessCardRequestDto);
-        PetBusinessCardResponseDto petBusinessCardResponseDto = new PetBusinessCardResponseDto(petBusinessCard);
-        return ResponseEntity.ok().body(petBusinessCardResponseDto);
+        petBusinessCardRepository.save(petBusinessCard);
+        PetBusinessCardResponseDto responseDto = new PetBusinessCardResponseDto(petBusinessCard);
+        return ResponseEntity.ok().body(responseDto);
     }
 
     public ResponseEntity<HttpStatus> deletePetBusinessCard(Long id, KakaoTokenInfo info) {
