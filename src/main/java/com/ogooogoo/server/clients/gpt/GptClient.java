@@ -1,6 +1,5 @@
 package com.ogooogoo.server.clients.gpt;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -8,10 +7,10 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,35 +19,39 @@ import java.util.Map;
 public class GptClient {
     private final String apiEndpoint;
     private final String authToken;
-    private final String prompt;
     private static final Logger logger = LoggerFactory.getLogger(GptClient.class);
 
     public GptClient(
             @Value("${gpt.api.endpoint}") String apiEndpoint,
-            @Value("${gpt.auth.token}") String authToken,
-            @Value("${gpt.prompt}") String prompt) {
+            @Value("${gpt.auth.token}") String authToken) {
 
         this.apiEndpoint = apiEndpoint;
         this.authToken = authToken;
-        this.prompt = prompt;
     }
 
     public GptResult getGptResponse(String body) {
         RestTemplate restTemplate = new RestTemplate();
-        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
 
         HttpHeaders headers = buildHeaders();
-        Map<String, Object> requestBody = buildBody(body);
+        List<Map<String, Object>> msgs = buildMessages(body);
+        List<Map<String, Object>> funcs = buildFunctions();
+        Map<String, Object> requestBody = buildBody(msgs, funcs);
 
         HttpEntity<Map<String, Object>> req = new HttpEntity<>(requestBody, headers);
 
-        try{
-            ResponseEntity<Map> response = restTemplate.exchange(apiEndpoint, HttpMethod.POST, req, Map.class);
-            return generateResult(response.getBody());
-        }catch (Exception ex){
-            logger.error(ex.getMessage());
-            throw ex;
+        ResponseEntity<GptResult> response = restTemplate.exchange(
+                apiEndpoint,
+                HttpMethod.POST,
+                req,
+                GptResult.class
+        );
+
+        if (!response.getStatusCode().is2xxSuccessful()) {
+            logger.error(response.getBody().toString());
+            throw new NullPointerException("Fail to get Breed and Adjective");
         }
+
+        return response.getBody();
     }
 
     private HttpHeaders buildHeaders(){
@@ -58,45 +61,56 @@ public class GptClient {
         return headers;
     }
 
-    private Map<String, Object> buildBody(String body){
+    private List<Map<String, Object>> buildMessages(String body){
+        Map<String, Object> systemMessage = new HashMap<>();
+        systemMessage.put("role", "system");
+        systemMessage.put("content", "Extract the Breed and Adjective from a given body text and translate to english.");
+
+        Map<String, Object> userMessage = new HashMap<>();
+        userMessage.put("role", "user");
+        userMessage.put("content", body);
+
+        return Arrays.asList(systemMessage, userMessage);
+    }
+
+    private List<Map<String, Object>> buildFunctions(){
+        Map<String, Object> breedProperties = new HashMap<>();
+        breedProperties.put("type", "string");
+        breedProperties.put("description", "The breed of the animal, e.g., 'Monkey'. if not english, translate it");
+
+        Map<String, Object> adjectiveProperties = new HashMap<>();
+        adjectiveProperties.put("type", "string");
+        adjectiveProperties.put("description", "The adjective describing the animal, e.g., 'wearing a swimsuit on the beach, under a blue sky'. if not english, translate it");
+
+        Map<String, Object> properties = new HashMap<>();
+        properties.put("Breed", breedProperties);
+        properties.put("Adjective", adjectiveProperties);
+
+        Map<String, Object> functionParameters = new HashMap<>();
+        functionParameters.put("type", "object");
+        functionParameters.put("properties", properties);
+        functionParameters.put("required", Arrays.asList("Breed", "Adjective"));
+
+        Map<String, Object> function = new HashMap<>();
+        function.put("name", "extract_breed_and_adjective");
+        function.put("description", "Extract the Breed and Adjective from a given body text.");
+        function.put("parameters", functionParameters);
+
+        return Arrays.asList(function);
+    }
+
+    private Map<String, Object> buildBody(List<Map<String, Object>> messages, List<Map<String, Object>> functions){
         Map<String, Object> requestBody = new HashMap<>();
-        requestBody.put("model", "gpt-4");
+        requestBody.put("model", "gpt-3.5-turbo-0613");
+        requestBody.put("messages", messages);
+        requestBody.put("functions", functions);
+        requestBody.put("function_call", "auto");
         requestBody.put("temperature", 0);
         requestBody.put("max_tokens", 256);
         requestBody.put("top_p", 0);
         requestBody.put("frequency_penalty", 0);
         requestBody.put("presence_penalty", 0);
 
-        Map<String, Object> message1 = new HashMap<>();
-        message1.put("role", "system");
-        message1.put("content", prompt);
-
-        Map<String, Object> message2 = new HashMap<>();
-        message2.put("role", "user");
-        message2.put("content", body);
-
-        requestBody.put("messages", List.of(message1, message2));
         return requestBody;
-    }
-
-    private GptResult generateResult(Map<String, Object> responseBody) {
-        if(responseBody == null || !responseBody.containsKey("choices"))
-            throw new RuntimeException("Invalid responseBody: 'choices' key is missing.");
-
-        List<Map<String, Object>> choices = (List<Map<String, Object>>) responseBody.get("choices");
-        if (choices.isEmpty())
-            throw new RuntimeException("No choices available in the responseBody.");
-
-        Map<String, Object> firstChoice = choices.get(0);
-        Map<String, Object> message = (Map<String, Object>) firstChoice.get("message");
-        String content = (String) message.get("content");
-
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            return objectMapper.readValue(content, GptResult.class);
-        } catch (Exception e) {
-            logger.error(content);
-            throw new RuntimeException("Error parsing the content into GptResult.", e);
-        }
     }
 }
