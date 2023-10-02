@@ -73,9 +73,9 @@ public enum Species {
 
     public static Species getSpecies(String speciesName) {
         return Arrays.stream(Species.values())
-                .filter(petType -> petType.check(speciesName))
-                .findAny()
-                .orElse(unknown);
+                .filter(species -> species.getSpeciesList().contains(speciesName))
+                .findFirst()
+                .orElse(Species.unknown);
     }
 
     public static String getAllSpecies() throws Exception {
@@ -86,10 +86,6 @@ public enum Species {
 
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.writeValueAsString(allSpecies);
-    }
-
-    private boolean check(String speciesName) {
-        return speciesList.stream().anyMatch(speciesList -> speciesList.equals(speciesName));
     }
 
 }
