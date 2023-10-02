@@ -54,7 +54,7 @@ public class PetBusinessCardResponseDto {
         this.gender = petBusinessCard.getGender();
         this.petProfileImgPath = petBusinessCard.getPetProfileImgPath();
         this.birth = petBusinessCard.getBirth();
-        this.species = Species.getSpecies(String.valueOf(petBusinessCard.getSpecies()));
+        this.species = petBusinessCard.getSpecies();
         this.neutralization = petBusinessCard.isNeutralization();
         this.allergy = petBusinessCard.isAllergy();
         this.mainAllergy = petBusinessCard.getMainAllergy();
