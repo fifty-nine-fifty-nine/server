@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -80,7 +81,7 @@ public class PetBusinessCardService {
         }
 
         if (businessCards.size() > 2) {
-            Collections.sort(businessCards);
+            Collections.sort(businessCards, Comparator.reverseOrder());
             List<PetBusinessCardEntity> sortedCards = businessCards.subList(0, 2);
 
             return ResponseEntity.ok().body(sortedCards);
