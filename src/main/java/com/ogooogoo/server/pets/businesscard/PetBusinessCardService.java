@@ -31,7 +31,13 @@ public class PetBusinessCardService {
         List<PetBusinessCardEntity> petBusinessCards = petBusinessCardRepository.findAllByUserId(userId);
 
         if (petBusinessCards.size() > 2) {
-            throw new IllegalStateException("펫명함은 최대 2개까지 생성할 수 있습니다");
+            throw new IllegalArgumentException("펫명함은 최대 2개까지 생성할 수 있습니다");
+        }
+
+        if (!petBusinessCardRequestDto.allergy) {
+            petBusinessCardRequestDto.getMainAllergy().clear();
+            petBusinessCardRequestDto.getSubAllergy().clear();
+            petBusinessCardRequestDto.getEtcAllergy().clear();
         }
 
         PetBusinessCardEntity petBusinessCard = new PetBusinessCardEntity(userId, petBusinessCardRequestDto);
