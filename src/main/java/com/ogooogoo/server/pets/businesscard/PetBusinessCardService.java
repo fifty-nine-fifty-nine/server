@@ -3,11 +3,13 @@ package com.ogooogoo.server.pets.businesscard;
 import com.ogooogoo.server.clients.kakao.KakaoTokenInfo;
 import com.ogooogoo.server.pets.category.Species;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -18,7 +20,6 @@ public class PetBusinessCardService {
     public ResponseEntity<Integer> checkBusinessCard(KakaoTokenInfo info) {
 
         Long userId = info.getId();
-
         List<PetBusinessCardEntity> petBusinessCards = petBusinessCardRepository.findAllByUserId(userId);
 
         return ResponseEntity.ok().body(petBusinessCards.size());
@@ -27,13 +28,17 @@ public class PetBusinessCardService {
     public ResponseEntity<PetBusinessCardResponseDto> createPetBusinessCard(PetBusinessCardRequestDto petBusinessCardRequestDto, KakaoTokenInfo info) {
 
         Long userId = info.getId();
-
         List<PetBusinessCardEntity> petBusinessCards = petBusinessCardRepository.findAllByUserId(userId);
+
         if (petBusinessCards.size() > 2) {
-            throw new IllegalStateException("펫명함은 최대 2개까지 생성할 수 있습니다");
+            throw new IllegalArgumentException("펫명함은 최대 2개까지 생성할 수 있습니다");
         }
 
-//        petBusinessCardRequestDto.validation();
+        if (!petBusinessCardRequestDto.allergy) {
+            petBusinessCardRequestDto.getMainAllergy().clear();
+            petBusinessCardRequestDto.getSubAllergy().clear();
+            petBusinessCardRequestDto.getEtcAllergy().clear();
+        }
 
         PetBusinessCardEntity petBusinessCard = new PetBusinessCardEntity(userId, petBusinessCardRequestDto);
         petBusinessCardRepository.save(petBusinessCard);
@@ -54,10 +59,12 @@ public class PetBusinessCardService {
         petBusinessCard.update(petBusinessCardRequestDto);
         petBusinessCardRepository.save(petBusinessCard);
         PetBusinessCardResponseDto responseDto = new PetBusinessCardResponseDto(petBusinessCard);
+
         return ResponseEntity.ok().body(responseDto);
     }
 
-    public ResponseEntity<HttpStatus> deletePetBusinessCard(Long id, KakaoTokenInfo info) {
+    public ResponseEntity<Long> deletePetBusinessCard(Long id, KakaoTokenInfo info) {
+
         PetBusinessCardEntity petBusinessCard = petBusinessCardRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 펫명함입니다"));
 
@@ -66,18 +73,24 @@ public class PetBusinessCardService {
         }
 
         petBusinessCardRepository.deleteById(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+
+        return ResponseEntity.ok().body(id);
     }
 
     public ResponseEntity<List<PetBusinessCardEntity>> getAllMy(KakaoTokenInfo info) {
+
         List<PetBusinessCardEntity> businessCards = petBusinessCardRepository.findAllByUserId(info.getId());
 
-        if (businessCards == null || businessCards.size() < 1) {
-            return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);
+        if (businessCards == null || businessCards.isEmpty()) {
+
+            return ResponseEntity.ok().body(new ArrayList<>());
         }
 
         if (businessCards.size() > 2) {
-            throw new IllegalStateException("명함을 불러올 수 없습니다");
+            Collections.sort(businessCards, Comparator.reverseOrder());
+            List<PetBusinessCardEntity> sortedCards = businessCards.subList(0, 2);
+
+            return ResponseEntity.ok().body(sortedCards);
         }
 
         Collections.sort(businessCards);
@@ -86,6 +99,7 @@ public class PetBusinessCardService {
     }
 
     public String getALlSpecies() throws Exception {
+
         return Species.getAllSpecies();
     }
 
