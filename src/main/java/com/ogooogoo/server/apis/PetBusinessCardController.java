@@ -1,6 +1,10 @@
-package com.ogooogoo.server.pets.businesscard;
+package com.ogooogoo.server.apis;
 
 import com.ogooogoo.server.clients.kakao.KakaoTokenInfo;
+import com.ogooogoo.server.pets.businesscard.PetBusinessCardEntity;
+import com.ogooogoo.server.pets.businesscard.PetBusinessCardRequestDto;
+import com.ogooogoo.server.pets.businesscard.PetBusinessCardResponseDto;
+import com.ogooogoo.server.pets.businesscard.PetBusinessCardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -29,11 +30,11 @@ public class PetBusinessCardResponseDto {
 
     boolean allergy;
 
-    List<MainAllergy> mainAllergy;
+    List<String> mainAllergy;
 
-    List<SubAllergy> subAllergy;
+    List<String> subAllergy;
 
-    List<EtcAllergy> etcAllergy;
+    List<String> etcAllergy;
 
     String personalityToPerson;
 
@@ -57,13 +58,21 @@ public class PetBusinessCardResponseDto {
         this.species = petBusinessCard.getSpecies();
         this.neutralization = petBusinessCard.isNeutralization();
         this.allergy = petBusinessCard.isAllergy();
-        this.mainAllergy = petBusinessCard.getMainAllergy();
-        this.subAllergy = petBusinessCard.getSubAllergy();
-        this.etcAllergy = petBusinessCard.getEtcAllergy();
+        this.mainAllergy = convertToStringList(petBusinessCard.getMainAllergy());
+        this.subAllergy = convertToStringList(petBusinessCard.getSubAllergy());
+        this.etcAllergy = convertToStringList(petBusinessCard.getEtcAllergy());
         this.personalityToPerson = petBusinessCard.getPersonalityToPerson();
         this.personalityAmongAnimals = petBusinessCard.getPersonalityAmongAnimals();
         this.petLike = petBusinessCard.getPetLike();
         this.petHate = petBusinessCard.getPetHate();
         this.businesscardImgPath = petBusinessCard.getBusinesscardImgPath();
+    }
+
+    private List<String> convertToStringList(List<? extends Enum<?>> enumList) {
+        List<String> stringList = new ArrayList<>();
+        for (Enum<?> enumValue : enumList) {
+            stringList.add(enumValue.name());
+        }
+        return stringList;
     }
 }
