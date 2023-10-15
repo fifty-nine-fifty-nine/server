@@ -1,6 +1,5 @@
 package com.ogooogoo.server.apis;
 
-import com.ogooogoo.server.clients.kakao.KakaoTokenInfo;
 import com.ogooogoo.server.config.security.UnauthorizedResponse;
 import com.ogooogoo.server.pets.cards.CreatePetCardReqDto;
 import com.ogooogoo.server.pets.cards.CreatePetCardResDto;
@@ -16,8 +15,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor
@@ -26,12 +27,6 @@ import org.springframework.web.bind.annotation.*;
 public class PetsController {
 
     private final PetCardServices petCardSvc;
-
-    @GetMapping
-    public String test(@AuthenticationPrincipal KakaoTokenInfo info) {
-        System.out.println(info);
-        return "test";
-    }
 
     @PostMapping("/cards")
     @Operation(
